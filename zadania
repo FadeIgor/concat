@@ -1,0 +1,13 @@
+concat, concat_WS
+SELECT
+	CONCAT(uczniowie.imie, ' ', uczniowie.nazwisko) as concat1,
+    CONCAT_WS(' ', uczniowie.imie, uczniowie.nazwisko) as CONCAT_WS
+    FROM uczniowie;
+
+
+SELECT 
+	concat(
+        ucase(LEFT(uczniowie.imie,1)),
+	substring(uczniowie.imie,2), ' ',
+    uczniowie.nazwisko)
+FROM uczniowie;
