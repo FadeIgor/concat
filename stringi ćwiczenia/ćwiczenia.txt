@@ -1,0 +1,50 @@
+1. Dokonaj konwersji daty z formatu rok-miesiac-dzień na dzień-miesiac-rok.
+SELECT DISTINCT
+concat(
+    substring(wypozyczenia.data_wyp, 9, 2), '-',
+    substring(wypozyczenia.data_wyp, 6, 2), '-',
+    substring(wypozyczenia.data_wyp, 1, 4)) as data_wypozyczenia 
+FROM wypozyczenia;
+
+
+SELECT DISTINCT
+concat(
+    day(wypozyczenia.data_wyp), '-',
+    month(wypozyczenia.data_wyp), '-',
+    year(wypozyczenia.data_wyp)) as data_wypozyczenia 
+FROM wypozyczenia;
+
+
+SELECT DISTINCT
+	date_format(wypozyczenia.data_wyp, "%d-%m-%Y")
+FROM wypozyczenia;
+
+2. Wyświetl imię i nazwisko klienta w jednej kolumnie wraz z formą grzecznościową (Pan dla panów, Pani dla pań).
+
+SELECT
+ concat(if(klienci.plec = 'M', "pani ", 'pan ') , klienci.imie_klienta, ' ', klienci.nazwisko_klienta)
+FROM klienci;
+
+
+3. Wyświetl domeny (domena to np. gmail.com lub onet.pl) w jakich klienci mają adresy mejlowe (w wyniku należy uzyskać 3 rekordy).
+
+
+SELECT DISTINCT 
+substring(klienci.email_klienta, locate('@', klienci.email_klienta) +1)
+FROM klienci;
+
+
+SELECT DISTINCT 
+substring(klienci.email_klienta, instr(klienci.email_klienta, '@')+1) as domena
+FROM klienci;
+
+
+
+*
+SELECT 
+    s.id_samochodu,
+    CONCAT(UCASE(LEFT(s.marka, 1)), SUBSTRING(s.marka, 2), ' ', s.model) AS samochod,
+    CONCAT(COUNT(d.id_samochodu), ' razy') AS liczba_wypozyczen
+FROM samochody s
+LEFT JOIN dane_wypozyczen d ON d.id_samochodu = s.id_samochodu
+GROUP BY s.id_samochodu, s.marka, s.model;
